@@ -9,55 +9,80 @@ namespace TestProject
     public class ParkingHelperTest
     {
         ParkingHelper ParkingHelper { get; set; }
+        IQueryable<ParkingSpot> ParkingSpotData { get; set; }
+        IQueryable<Pass> PassData { get; set; }
+        IQueryable<Vehicle> VehicleData { get; set; }
+        IQueryable<Reservation> ReservationData { get; set; }
+
         public ParkingHelperTest()
         {
             ParkingSpot parkingSpot1 = new ParkingSpot { ID = 1, Occupied = false };
-            ParkingSpot parkingSpot2 = new ParkingSpot { ID = 1, Occupied = false };
-            ParkingSpot parkingSpot3 = new ParkingSpot { ID = 1, Occupied = false };
-            ParkingSpot parkingSpot4 = new ParkingSpot { ID = 1, Occupied = false };
+            ParkingSpot parkingSpot2 = new ParkingSpot { ID = 2, Occupied = false };
+            ParkingSpot parkingSpot3 = new ParkingSpot { ID = 3, Occupied = false };
+            ParkingSpot parkingSpot4 = new ParkingSpot { ID = 4, Occupied = false };
+            ParkingSpot parkingSpot5 = new ParkingSpot { ID = 5, Occupied = false };
 
-            var parkingSpotData = new List<ParkingSpot>
+            ParkingSpotData = new List<ParkingSpot>
             {
-                parkingSpot1, parkingSpot2, parkingSpot3, parkingSpot4
+                parkingSpot1, parkingSpot2, parkingSpot3, parkingSpot4, parkingSpot5
             }.AsQueryable();
 
-            var passData = new List<Pass>{}.AsQueryable();
+            Pass pass1 = new Pass { ID = 1, Purchaser = "A", Premium = false, Capacity = 1 };
+            Pass pass2 = new Pass { ID = 2, Purchaser = "B", Premium = false, Capacity = 2 };
+            Pass pass3 = new Pass { ID = 3, Purchaser = "C", Premium = false, Capacity = 3 };
+            Pass pass4 = new Pass { ID = 4, Purchaser = "D", Premium = true, Capacity = 4 };
+            Pass pass5 = new Pass { ID = 5, Purchaser = "E", Premium = true, Capacity = 5 };
 
-            var vehicleData = new List<Vehicle>{}.AsQueryable();
+            PassData = new List<Pass>
+            {
+                pass1, pass2, pass3, pass4, pass5
+            }.AsQueryable();
 
-            var reservationData = new List<Reservation>{}.AsQueryable();
+            Vehicle vehicle1 = new Vehicle { ID = 1, Parked = false, Licence = "LA" };
+            Vehicle vehicle2 = new Vehicle { ID = 2, Parked = false, Licence = "LB" };
+            Vehicle vehicle3 = new Vehicle { ID = 3, Parked = false, Licence = "LC" };
+            Vehicle vehicle4 = new Vehicle { ID = 4, Parked = false, Licence = "LD" };
+            Vehicle vehicle5 = new Vehicle { ID = 5, Parked = false, Licence = "LE" };
+            Vehicle vehicle6 = new Vehicle { ID = 6, Parked = false, Licence = "LF" };
+
+            VehicleData = new List<Vehicle>
+            {
+                vehicle1, vehicle2, vehicle3, vehicle4, vehicle5
+            }.AsQueryable();
+
+            ReservationData = new List<Reservation>{}.AsQueryable();
 
             // mocking ParkingSpot DB set
             var mockParkingDbSet = new Mock<DbSet<ParkingSpot>>();
 
-            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.Provider).Returns(parkingSpotData.Provider);
-            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.Expression).Returns(parkingSpotData.Expression);
-            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.ElementType).Returns(parkingSpotData.ElementType);
-            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.GetEnumerator()).Returns(parkingSpotData.GetEnumerator);
+            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.Provider).Returns(ParkingSpotData.Provider);
+            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.Expression).Returns(ParkingSpotData.Expression);
+            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.ElementType).Returns(ParkingSpotData.ElementType);
+            mockParkingDbSet.As<IQueryable<ParkingSpot>>().Setup(m => m.GetEnumerator()).Returns(ParkingSpotData.GetEnumerator);
 
             // mocking Reservation DB set
             var mockReservationDbSet = new Mock<DbSet<Reservation>>();
 
-            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.Provider).Returns(reservationData.Provider);
-            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.Expression).Returns(reservationData.Expression);
-            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.ElementType).Returns(reservationData.ElementType);
-            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.GetEnumerator()).Returns(reservationData.GetEnumerator);
+            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.Provider).Returns(ReservationData.Provider);
+            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.Expression).Returns(ReservationData.Expression);
+            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.ElementType).Returns(ReservationData.ElementType);
+            mockReservationDbSet.As<IQueryable<Reservation>>().Setup(m => m.GetEnumerator()).Returns(ReservationData.GetEnumerator);
 
             // mocking Vehicle DB set
             var mockVehicleDbSet = new Mock<DbSet<Vehicle>>();
 
-            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.Provider).Returns(vehicleData.Provider);
-            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.Expression).Returns(vehicleData.Expression);
-            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.ElementType).Returns(vehicleData.ElementType);
-            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.GetEnumerator()).Returns(vehicleData.GetEnumerator);
+            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.Provider).Returns(VehicleData.Provider);
+            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.Expression).Returns(VehicleData.Expression);
+            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.ElementType).Returns(VehicleData.ElementType);
+            mockVehicleDbSet.As<IQueryable<Vehicle>>().Setup(m => m.GetEnumerator()).Returns(VehicleData.GetEnumerator);
 
             // mocking Pass DB set
             var mockPassDbSet = new Mock<DbSet<Pass>>();
 
-            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.Provider).Returns(passData.Provider);
-            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.Expression).Returns(passData.Expression);
-            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.ElementType).Returns(passData.ElementType);
-            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.GetEnumerator()).Returns(passData.GetEnumerator);
+            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.Provider).Returns(PassData.Provider);
+            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.Expression).Returns(PassData.Expression);
+            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.ElementType).Returns(PassData.ElementType);
+            mockPassDbSet.As<IQueryable<Pass>>().Setup(m => m.GetEnumerator()).Returns(PassData.GetEnumerator);
 
             var mockParkingContext = new Mock<ParkingContext>();
 
@@ -91,6 +116,32 @@ namespace TestProject
             Assert.AreEqual(pass.Premium, isPremiumInput);
 
             Assert.AreEqual(pass.Capacity, capacityInput);
+        }
+
+        [DataRow("A", "LA")]
+        [DataRow("B", "LB")]
+        [DataRow("X", "LF")]
+        [DataRow("B", "LY")]
+        [DataRow("A", "LC")]
+        [DataRow("A", "LD")]
+        [DataRow("A", "LE")]
+        [DataRow("A", "LF")]
+        [TestMethod]
+        public async Task AddVehicleToPassTest(string passholderName, string vehicleLicence)
+        {
+            bool vehicleAddedToPass = await ParkingHelper.AddVehicleToPass(passholderName, vehicleLicence);
+
+            Pass pass = PassData.FirstOrDefault(p => p.Purchaser == passholderName);
+            Vehicle vehicle = VehicleData.FirstOrDefault(v => v.Licence == vehicleLicence);
+
+            if (pass != null && vehicle != null)
+            {
+                Assert.IsTrue(vehicleAddedToPass);
+            }
+            else
+            {
+                Assert.IsFalse(vehicleAddedToPass);
+            }
         }
     }
 }

@@ -11,5 +11,7 @@
         public virtual ICollection<Reservation> Reservations { get; set; }
 
         public bool Parked { get; set; }
+
+        public string Licence { get; set; }
     }
 }
